@@ -2,7 +2,7 @@
 
 module.exports = function (grunt) {
     // Show elapsed time at the end
-    require('time-grunt')(grunt);
+    //require('time-grunt')(grunt);
     // Load all grunt tasks
     require('load-grunt-tasks')(grunt);
 
@@ -28,7 +28,7 @@ module.exports = function (grunt) {
         },
         mochacli: {
             options: {
-                reporter: 'nyan',
+                reporter: 'spec',
                 bail: true
             },
             all: ['test/*.js']
