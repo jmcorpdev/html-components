@@ -1,0 +1,41 @@
+{
+  "name": "html-components",
+  "version": "0.0.0",
+  "main": "lib/html-components.js",
+  "description": "Create html components from templates with a simple way",
+  "homepage": "https://github.com/arnogues/html-components",
+  "bugs": "https://github.com/arnogues/html-components/issues",
+  "author": {
+    "name": "Arnaud Gueras",
+    "email": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arnogues/html-components"
+  },
+  "license": "MIT",
+  "files": [
+    "lib"
+  ],
+  "keywords": [
+    "html-components",
+    "cheerio"
+  ],
+  "dependencies": {
+    "cheerio": "^0.17.0",
+    "glob": "^4.0.5",
+    "lodash": "^2.4.1"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-nodeunit": "^0.3.3",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-mocha-cli": "^1.9.0",
+    "jshint-stylish": "^0.2.0",
+    "load-grunt-tasks": "^0.4.0",
+    "time-grunt": "^0.3.1"
+  },
+  "scripts": {
+    "test": "grunt"
+  }
+}
