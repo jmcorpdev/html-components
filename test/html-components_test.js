@@ -2,6 +2,7 @@
 'use strict';
 var assert = require('assert'),
     cheerio = require('cheerio'),
+    fs = require('fs'),
     HTMLComponents = require('../lib/html-components.js');
 
 describe('html-components node module.', function () {
@@ -83,10 +84,44 @@ describe('html-components node module.', function () {
         var $ = cheerio.load(html);
         var node = $('comp1').eq(0);
         var newHTML = htmlComponents.processNode(node, $);
-        assert.equal(newHTML, '<div class="comp1">\n' +
+        assert.strictEqual(newHTML, '<div class="comp1">\n' +
             '    <span>i am attr1</span>\n' +
             '    <span>I am attr2</span>\n' +
             '</div>');
+    });
+
+
+    var resultPageContent = '<!DOCTYPE html>\n' +
+        '<html>\n' +
+        '<head lang="en">\n' +
+        '    <meta charset="UTF-8">\n' +
+        '    <title></title>\n' +
+        '</head>\n' +
+        '<body>\n' +
+        '\n' +
+        '<div class="comp1">\n' +
+        '    <span>i am attr1</span>\n' +
+        '    <span>I am attr2</span>\n' +
+        '</div>\n' +
+        '\n' +
+        '<div class="tagtype1">\n' +
+        '    <span>i am attr1</span>\n' +
+        '    <span>I am attr2</span>\n' +
+        '</div>\n' +
+        '\n' +
+        '</body>\n' +
+        '</html>';
+    it('should process an entire html string from file', function () {
+        htmlComponents.initTags();
+        var html = fs.readFileSync('test/resources/htmlpages/page.html', {encoding: 'utf-8'});
+        var newHTML = htmlComponents.processHTML(html);
+        assert.equal(newHTML, resultPageContent);
+    });
+
+    it('should process read a file from src dir and write it to dest dir', function() {
+        htmlComponents.processFile('page.html', 'test/resources/htmlpages', '.tmp');
+        var fileContent = fs.readFileSync('.tmp/page.html', {encoding:'utf-8'});
+        assert.equal(fileContent, resultPageContent);
     });
 
 });
