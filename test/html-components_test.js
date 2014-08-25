@@ -3,6 +3,8 @@
 var assert = require('assert'),
     cheerio = require('cheerio'),
     fs = require('fs'),
+    glob = require('glob-all'),
+    path = require('path'),
     HTMLComponents = require('../lib/html-components.js');
 
 describe('html-components node module.', function () {
@@ -44,7 +46,7 @@ describe('html-components node module.', function () {
     });
 
     var testNodeDataAsAttributeProperties = '<node><_attr1>value1</_attr1><_attr2>value2</_attr2><_data-custom1>datavalue1</_data-custom1><_data-custom2>datavalue2</_data-custom2></node>';
-    it('it should process all nodes even data-nodes into attributes object', function () {
+    it('should process all nodes even data-nodes into attributes object', function () {
         var $ = cheerio.load(testNodeDataAsAttributeProperties);
         var node = $('node').eq(0);
         var attrObj = htmlComponents.processAttributes(node, $);
@@ -118,10 +120,24 @@ describe('html-components node module.', function () {
         assert.equal(newHTML, resultPageContent);
     });
 
-    it('should process read a file from src dir and write it to dest dir', function() {
+    it('should process read a file from src dir and write it to dest dir', function () {
         htmlComponents.processFile('page.html', 'test/resources/htmlpages', '.tmp');
-        var fileContent = fs.readFileSync('.tmp/page.html', {encoding:'utf-8'});
+        var fileContent = fs.readFileSync('.tmp/page.html', {encoding: 'utf-8'});
         assert.equal(fileContent, resultPageContent);
+    });
+
+    it('should process a entire directory and have the same number of files', function () {
+        htmlComponents.processDirectory(['**/*.html', '*.html'], 'test/resources/htmlpages', '.tmp');
+
+        var files = glob.sync(['**/*'], {cwd: '.tmp'}).filter(function (f) {
+            return fs.lstatSync(path.join('.tmp', f)).isFile();
+        });
+
+        assert(fs.existsSync('.tmp/page.html'), 'test if file is written');
+        assert(fs.existsSync('.tmp/page2.html'), 'test if file is written');
+        assert(fs.existsSync('.tmp/subdir/page3.html'), 'test if file is written');
+        assert(fs.existsSync('.tmp/subdir/page3.html'), 'test if file is written');
+        assert.equal(files.length, 3);
     });
 
 });
