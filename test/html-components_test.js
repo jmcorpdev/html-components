@@ -64,6 +64,16 @@ describe('html-components node module.', function () {
         assert.strictEqual(node.children().length, 0);
     });
 
+    var testNodeWithHTML= '<node><_attr1>value1</_attr1><_attr2>value2</_attr2><_data-custom1>datavalue1</_data-custom1><_data-custom2>datavalue2</_data-custom2><label>This is label</label>\n<span>This is span</span> this is direct text</node>';
+    it('attributes object should have property `html` with the html of the node without custom nodes', function() {
+        var $ = cheerio.load(testNodeWithHTML);
+        var node = $('node').eq(0);
+        var attr = htmlComponents.processAttributes(node, $);
+        console.log(attr);
+        console.log(node.html());
+        assert.strictEqual(attr.html, '<label>This is label</label>\n<span>This is span</span> this is direct text');
+    });
+
     it('should get template from name', function () {
         var template = htmlComponents.getTemplate('comp1');
         assert.strictEqual(template, '<div class="comp1">\n' +
