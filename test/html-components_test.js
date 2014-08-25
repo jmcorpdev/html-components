@@ -9,59 +9,84 @@ describe('html-components node module.', function () {
         componentsFolder: 'test/resources/components-folder'
     });
 
-    it('must get 2 tags from components folder', function () {
-        assert(htmlComponents.getTags().length, 2);
-    });
-
-    it('getTags : must have tags `comp1,tag` in the result of getTags', function () {
-        assert(htmlComponents.getTags().join(','), 'comp1,tag');
+    it('should correctly list the tags in components folder', function () {
+        htmlComponents.initTags();
+        assert.strictEqual(htmlComponents.tags.join(','), 'comp1,tag');
     });
 
     var testNodeAttr = '<node attr1="value1" attr2="value2"></node>';
-    it('processAttributes : must return attributes for `' + testNodeAttr + '`', function () {
+    it('should return object from attributes', function () {
         var attrObj = htmlComponents.processAttributes(cheerio.load(testNodeAttr)('node').eq(0));
-        assert(attrObj.attr1, 'value1');
-        assert(attrObj.attr2, 'value2');
+        assert.strictEqual(attrObj.attr1, 'value1');
+        assert.strictEqual(attrObj.attr2, 'value2');
     });
 
     var testNodeData = '<node attr1="value1" attr2="value2" data-custom1="datavalue1" data-custom2="datavalue2"></node>';
-    it('processAttributes : must return attributes attr1 and attr2 for `' + testNodeData + '', function () {
+    it('should return object from data-attributes into object attached to attributes object', function () {
         var $ = cheerio.load(testNodeData);
         var attrObj = htmlComponents.processAttributes($('node').eq(0), $);
-        assert(attrObj.data.custom1, 'datavalue1');
-        assert(attrObj.data.custom2, 'datavalue2');
+        assert.strictEqual(attrObj.data.custom1, 'datavalue1');
+        assert.strictEqual(attrObj.data.custom2, 'datavalue2');
     });
 
 
     var testNodeAttrAsNodes = '<node><_attr1>value1</_attr1><_attr2>value2</_attr2><_data-custom1>datavalue1</_data-custom1><_data-custom2>datavalue2</_data-custom2></node>';
-    it('processAttributes : must process nodes as attributes from `' + testNodeAttrAsNodes + '', function () {
+    it('should process node as attributes', function () {
         var $ = cheerio.load(testNodeAttrAsNodes);
         var node = $('node').eq(0);
         var attrObj = htmlComponents.processNodesAsAttributes(node, $);
 
-        assert(attrObj.attr1, 'value1');
-        assert(attrObj.attr2, 'value2');
-        assert(attrObj['data-custom1'], 'datavalue1');
-        assert(attrObj['data-custom2'], 'datavalue2');
+        assert.strictEqual(attrObj.attr1, 'value1');
+        assert.strictEqual(attrObj.attr2, 'value2');
+        assert.strictEqual(attrObj['data-custom1'], 'datavalue1');
+        assert.strictEqual(attrObj['data-custom2'], 'datavalue2');
     });
 
     var testNodeDataAsAttributeProperties = '<node><_attr1>value1</_attr1><_attr2>value2</_attr2><_data-custom1>datavalue1</_data-custom1><_data-custom2>datavalue2</_data-custom2></node>';
-    it('processAttributes : must process nodes as attributes and data nodes as attributes into data object from `' + testNodeDataAsAttributeProperties + '', function () {
+    it('it should process all nodes even data-nodes into attributes object', function () {
         var $ = cheerio.load(testNodeDataAsAttributeProperties);
         var node = $('node').eq(0);
         var attrObj = htmlComponents.processAttributes(node, $);
 
-        assert(attrObj.attr1, 'value1');
-        assert(attrObj.attr2, 'value2');
-        assert(attrObj.data.custom1, 'datavalue1');
-        assert(attrObj.data.custom2, 'datavalue2');
+        assert.strictEqual(attrObj.attr1, 'value1');
+        assert.strictEqual(attrObj.attr2, 'value2');
+        assert.strictEqual(attrObj.data.custom1, 'datavalue1');
+        assert.strictEqual(attrObj.data.custom2, 'datavalue2');
     });
 
-    it('processNodesAsAttributes : node must have 0 children after processing `' + testNodeAttrAsNodes + '', function () {
+    it('should remove all attributes nodes after processing nodes', function () {
         var $ = cheerio.load(testNodeAttrAsNodes);
         var node = $('node').eq(0);
         htmlComponents.processNodesAsAttributes(node, $);
-        assert(node.children().length === 0, true);
+        assert.strictEqual(node.children().length, 0);
+    });
+
+    it('should get template from name', function () {
+        var template = htmlComponents.getTemplate('comp1');
+        assert.strictEqual(template, '<div class="comp1">\n' +
+            '    {{#if attr1}}<span>{{{attr1}}}</span>{{/if}}\n' +
+            '    {{#if attr2}}<span>{{{attr2}}}</span>{{/if}}\n' +
+            '</div>');
+    });
+
+    it('should get template from name and type', function () {
+        var template = htmlComponents.getTemplate('tag', 'type1');
+        assert.strictEqual(template, '<div class="tagtype1">\n' +
+            '    {{#if attr1}}<span>{{{attr1}}}</span>{{/if}}\n' +
+            '    {{#if attr2}}<span>{{{attr2}}}</span>{{/if}}\n' +
+            '</div>');
+    });
+
+    it('should replace node by it\'s generated HTML', function () {
+        htmlComponents.initTags();
+        var html = '<comp1 attr1="i am attr1"><_attr2>I am attr2</_attr2></comp1>';
+        var $ = cheerio.load(html);
+        var node = $('comp1').eq(0);
+        var newHTML = htmlComponents.processNode(node, $);
+        assert.equal(newHTML, '<div class="comp1">\n' +
+            '    <span>i am attr1</span>\n' +
+            '    <span>I am attr2</span>\n' +
+            '</div>');
     });
 
 });

@@ -56,7 +56,7 @@ module.exports = function (grunt) {
     // Default task.
     grunt.registerTask('default', ['jshint', 'mochacli']);
     grunt.registerTask('dev', ['example','watch']);
-    grunt.registerTask('devtest', ['test','watch']);
+    grunt.registerTask('devtest', ['jshint:test', 'mochacli','watch']);
     grunt.registerTask('example', function() {
         var example = require('./example/html-components_example');
         example();
