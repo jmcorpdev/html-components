@@ -174,4 +174,19 @@ describe('html-components node module.', function () {
         assert.equal(attrObj.dataStr, 'data-custom1="datavalue1" data-custom2="datavalue2"');
     });
 
+    it('should be possible to specify the prefix for the node attributes', function(){
+        var htmlTemp = new HTMLComponents({
+            attrNodePrefix:'z-',
+            componentsFolder: 'test/resources/components-folder'
+        });
+        htmlTemp.initTags();
+        var testNodeData = '<node><z-attr1>value1</z-attr1><z-attr2>value2</z-attr2><z-data-custom1>datavalue1</z-data-custom1><z-data-custom2>datavalue2</z-data-custom2></node>';
+        var $ = cheerio.load(testNodeData);
+        var attrObj = htmlTemp.processAttributes($('node').eq(0), $);
+
+        assert.equal(attrObj.attr1, 'value1');
+        assert.equal(attrObj.attr2, 'value2');
+        assert.equal(attrObj.data.custom1, 'datavalue1');
+        assert.equal(attrObj.data.custom2, 'datavalue2');
+    });
 });
