@@ -84,17 +84,15 @@ describe('html-components node module.', function () {
         var template = htmlComponents.getTemplate('tag', 'type1');
         assert.strictEqual(template, '<div class="tagtype1">\n' +
             '    {{#if attr1}}<span>{{{attr1}}}</span>{{/if}}\n' +
-            '    {{#if attr2}}<span>{{{attr2}}}</span>{{/if}}\n' +
+            '    {{#if attr2}}<span>{{{attr2}}}</span>{{/if}}{{{html}}}\n' +
             '</div>');
     });
 
     it('should be possible to have a custom tag inside another tag', function () {
         var string = '<comp1><tag type="type1"></tag>blabla</comp1>';
         var newHTML = htmlComponents.processHTML(string);
-        assert.equal(newHTML, '<div class="comp1">\n' +
-            '    \n' +
-            '    <tag type="type1"></tag>blabla\n' +
-            '</div>')
+        //simple test of node "tag" existance
+        assert(!/<tag/.test(newHTML));
     });
 
     it('should replace node by it\'s generated HTML', function () {
@@ -125,7 +123,7 @@ describe('html-components node module.', function () {
         '\n' +
         '<div class="tagtype1">\n' +
         '    <span>i am attr1</span>\n' +
-        '    <span>I am attr2</span>\n' +
+        '    <span>I am attr2</span>\n    \n\n' +
         '</div>\n' +
         '\n' +
         '</body>\n' +
