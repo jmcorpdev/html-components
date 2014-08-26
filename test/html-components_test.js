@@ -64,13 +64,11 @@ describe('html-components node module.', function () {
         assert.strictEqual(node.children().length, 0);
     });
 
-    var testNodeWithHTML= '<node><_attr1>value1</_attr1><_attr2>value2</_attr2><_data-custom1>datavalue1</_data-custom1><_data-custom2>datavalue2</_data-custom2><label>This is label</label>\n<span>This is span</span> this is direct text</node>';
-    it('attributes object should have property `html` with the html of the node without custom nodes', function() {
+    var testNodeWithHTML = '<node><_attr1>value1</_attr1><_attr2>value2</_attr2><_data-custom1>datavalue1</_data-custom1><_data-custom2>datavalue2</_data-custom2><label>This is label</label>\n<span>This is span</span> this is direct text</node>';
+    it('attributes object should have property `html` with the html of the node without custom nodes', function () {
         var $ = cheerio.load(testNodeWithHTML);
         var node = $('node').eq(0);
         var attr = htmlComponents.processAttributes(node, $);
-        console.log(attr);
-        console.log(node.html());
         assert.strictEqual(attr.html, '<label>This is label</label>\n<span>This is span</span> this is direct text');
     });
 
@@ -78,7 +76,7 @@ describe('html-components node module.', function () {
         var template = htmlComponents.getTemplate('comp1');
         assert.strictEqual(template, '<div class="comp1">\n' +
             '    {{#if attr1}}<span>{{{attr1}}}</span>{{/if}}\n' +
-            '    {{#if attr2}}<span>{{{attr2}}}</span>{{/if}}\n' +
+            '    {{#if attr2}}<span>{{{attr2}}}</span>{{/if}}{{{html}}}\n' +
             '</div>');
     });
 
@@ -88,6 +86,15 @@ describe('html-components node module.', function () {
             '    {{#if attr1}}<span>{{{attr1}}}</span>{{/if}}\n' +
             '    {{#if attr2}}<span>{{{attr2}}}</span>{{/if}}\n' +
             '</div>');
+    });
+
+    it('should be possible to have a custom tag inside another tag', function () {
+        var string = '<comp1><tag type="type1"></tag>blabla</comp1>';
+        var newHTML = htmlComponents.processHTML(string);
+        assert.equal(newHTML, '<div class="comp1">\n' +
+            '    \n' +
+            '    <tag type="type1"></tag>blabla\n' +
+            '</div>')
     });
 
     it('should replace node by it\'s generated HTML', function () {
@@ -113,7 +120,7 @@ describe('html-components node module.', function () {
         '\n' +
         '<div class="comp1">\n' +
         '    <span>i am attr1</span>\n' +
-        '    <span>I am attr2</span>\n' +
+        '    <span>I am attr2</span>\n    \n\n' +
         '</div>\n' +
         '\n' +
         '<div class="tagtype1">\n' +
