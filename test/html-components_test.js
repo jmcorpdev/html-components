@@ -165,13 +165,12 @@ describe('html-components node module.', function () {
     });
 
     it('should have the data object into attached string `dataStr`', function () {
-        var testNodeData = '<node attr1="value1" data-custom1="datavalue1" data-custom2="datavalue2"></node>';
+        var testNodeData = '<node attr1="value1" data-custom1="datavalue1" data-custom2="datavalue2">hmtl content</node>';
         var $ = cheerio.load(testNodeData);
         var attrObj = htmlComponents.processAttributes($('node').eq(0), $);
 
         assert.equal(attrObj.data.custom1, 'datavalue1');
         assert.equal(attrObj.data.custom2, 'datavalue2');
-        console.log(attrObj);
         assert.equal(attrObj.dataStr, 'data-custom1="datavalue1" data-custom2="datavalue2"');
     });
 
