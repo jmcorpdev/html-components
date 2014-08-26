@@ -65,7 +65,7 @@ describe('html-components node module.', function () {
     });
 
     var testNodeWithHTML = '<node><_attr1>value1</_attr1><_attr2>value2</_attr2><_data-custom1>datavalue1</_data-custom1><_data-custom2>datavalue2</_data-custom2><label>This is label</label>\n<span>This is span</span> this is direct text</node>';
-    it('attributes object should have property `html` with the html of the node without custom nodes', function () {
+    it('should put property `html` with the html of the node without custom nodes', function () {
         var $ = cheerio.load(testNodeWithHTML);
         var node = $('node').eq(0);
         var attr = htmlComponents.processAttributes(node, $);
@@ -153,6 +153,26 @@ describe('html-components node module.', function () {
         assert(fs.existsSync('.tmp/subdir/page3.html'), 'test if file is written');
         assert(fs.existsSync('.tmp/subdir/page3.html'), 'test if file is written');
         assert.equal(files.length, 3);
+    });
+
+    it('should transform data object into attributes string', function () {
+        var str = htmlComponents.objectToAttributes('data-', {
+            attr1: 'value1',
+            attr2: 'value2'
+        });
+
+        assert.equal(str, 'data-attr1="value1" data-attr2="value2"');
+    });
+
+    it('should have the data object into attached string `dataStr`', function () {
+        var testNodeData = '<node attr1="value1" data-custom1="datavalue1" data-custom2="datavalue2"></node>';
+        var $ = cheerio.load(testNodeData);
+        var attrObj = htmlComponents.processAttributes($('node').eq(0), $);
+
+        assert.equal(attrObj.data.custom1, 'datavalue1');
+        assert.equal(attrObj.data.custom2, 'datavalue2');
+        console.log(attrObj);
+        assert.equal(attrObj.dataStr, 'data-custom1="datavalue1" data-custom2="datavalue2"');
     });
 
 });
