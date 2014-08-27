@@ -7,14 +7,14 @@ var assert = require('assert'),
     path = require('path'),
     HTMLComponents = require('../lib/html-components.js');
 
-describe('html-components node module.', function () {
+describe('html-components node module .', function () {
     var htmlComponents = new HTMLComponents({
         componentsFolder: 'test/resources/components-folder'
     });
 
     it('should correctly list the tags in components folder', function () {
         htmlComponents.initTags();
-        assert.strictEqual(htmlComponents.tags.join(','), 'comp1,tag');
+        assert.strictEqual(htmlComponents.tags.join(','), 'comp1,customselect,tag');
     });
 
     var testNodeAttr = '<node attr1="value1" attr2="value2"></node>';
@@ -156,7 +156,7 @@ describe('html-components node module.', function () {
     });
 
     it('should transform data object into attributes string', function () {
-        var str = htmlComponents.objectToAttributes('data-', {
+        var str = htmlComponents.objectToAttributeString('data-', {
             attr1: 'value1',
             attr2: 'value2'
         });
@@ -174,9 +174,9 @@ describe('html-components node module.', function () {
         assert.equal(attrObj.dataStr, 'data-custom1="datavalue1" data-custom2="datavalue2"');
     });
 
-    it('should be possible to specify the prefix for the node attributes', function(){
+    it('should be possible to specify  the prefix for the node attributes (attrNodePrefix)', function () {
         var htmlTemp = new HTMLComponents({
-            attrNodePrefix:'z-',
+            attrNodePrefix: 'z-',
             componentsFolder: 'test/resources/components-folder'
         });
         htmlTemp.initTags();
@@ -188,5 +188,11 @@ describe('html-components node module.', function () {
         assert.equal(attrObj.attr2, 'value2');
         assert.equal(attrObj.data.custom1, 'datavalue1');
         assert.equal(attrObj.data.custom2, 'datavalue2');
+    });
+
+    it('should be possible to use collections in the component', function () {
+        var html = '<customselect><item value="test">label</item><item value="test2">label2</item></customselect>';
+        var newHTML = htmlComponents.processHTML(html);
+        assert.equal(newHTML, '<select>\n    <option value="test">label</option>\n    <option value="test2">label2</option>\n</select>');
     });
 });
