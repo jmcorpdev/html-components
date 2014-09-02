@@ -14,7 +14,7 @@ describe('html-components node module .', function () {
 
     it('should correctly list the tags in components folder', function () {
         htmlComponents.initTags();
-        assert.strictEqual(htmlComponents.tags.join(','), 'comp1,customselect,tag');
+        assert.strictEqual(htmlComponents.tags.join(','), 'comp1,customselect,scripttest,tag');
     });
 
     var testNodeAttr = '<node attr1="value1" attr2="value2"></node>';
@@ -152,7 +152,7 @@ describe('html-components node module .', function () {
         assert(fs.existsSync('.tmp/page2.html'), 'test if file is written');
         assert(fs.existsSync('.tmp/subdir/page3.html'), 'test if file is written');
         assert(fs.existsSync('.tmp/subdir/page3.html'), 'test if file is written');
-        assert.equal(files.length, 3);
+        assert.equal(files.length, 4);
     });
 
     it('should transform data object into attributes string', function () {
