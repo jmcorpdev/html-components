@@ -12,17 +12,6 @@ var html-components = require('html-components');
 html-components.awesome(); // "awesome"
 ```
 
-Install with cli command
-
-```sh
-$ npm install -g html-components
-$ html-components --help
-$ html-components --version
-```
-
-
-
-
 ## Documentation
 
 _(Coming soon)_
