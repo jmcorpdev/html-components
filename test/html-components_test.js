@@ -14,7 +14,7 @@ describe('html-components node module .', function () {
 
     it('should correctly list the tags in components folder', function () {
         htmlComponents.initTags();
-        assert.strictEqual(htmlComponents.tags.join(','), 'comp1,customselect,scripttest,tag');
+        assert.strictEqual(htmlComponents.tags.join(','), 'comp1,customselect,scripttest,tag'); //script tag is added by code
     });
 
     var testNodeAttr = '<node attr1="value1" attr2="value2"></node>';
@@ -194,5 +194,15 @@ describe('html-components node module .', function () {
         var html = '<customselect><item value="test">label</item><item value="test2">label2</item></customselect>';
         var newHTML = htmlComponents.processHTML(html);
         assert.equal(newHTML, '<select>\n    <option value="test">label</option>\n    <option value="test2">label2</option>\n</select>');
+    });
+
+    it('shoud be possible to process script tags', function () {
+        htmlComponents.processFile('scripttest.html', 'test/resources/htmlpages', '.tmp');
+        var fileContent = fs.readFileSync('.tmp/scripttest.html', {encoding: 'utf-8'});
+        var $ = cheerio.load(fileContent);
+
+        assert(/<div class="comp1">/.test($('script').eq(0).text()), true);
+
+        console.log($.html());
     });
 });
