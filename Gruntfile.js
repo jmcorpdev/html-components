@@ -33,6 +33,16 @@ module.exports = function (grunt) {
             },
             all: ['test/*.js']
         },
+        jsdox: {
+            generate: {
+                options: {
+                    contentsTitle: 'My Project Documentation'
+                },
+
+                src: ['lib/**/*.js'],
+                dest: 'doc'
+            }
+        },
         watch: {
             gruntfile: {
                 files: '<%= jshint.gruntfile.src %>',
@@ -55,10 +65,20 @@ module.exports = function (grunt) {
 
     // Default task.
     grunt.registerTask('default', ['jshint', 'mochacli']);
-    grunt.registerTask('dev', ['example','watch']);
-    grunt.registerTask('devtest', ['jshint:test', 'mochacli','watch']);
-    grunt.registerTask('example', function() {
+    grunt.registerTask('dev', ['example', 'watch']);
+    grunt.registerTask('devtest', ['jshint:test', 'mochacli', 'watch']);
+    /*grunt.registerTask('example', function () {
         var example = require('./example/html-components_example');
         example();
+    });
+    */
+    grunt.registerTask('docEnd', function() {
+        //move generated document files into doc folder
+        var fs = require('fs');
+        if(!fs.existsSync('doc')) {
+            fs.mkdirSync('doc');
+        }
+
+
     });
 };
