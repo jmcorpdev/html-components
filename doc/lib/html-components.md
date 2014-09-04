@@ -12,10 +12,10 @@ HTMLComponents
 https://github.com/arnogues/html-components
 
 **Defaults** - options
-**default** - folder where the components are stored
-**source** - directory, srcDir is relative to the projectFolder
-**Destination** - directory, where the html files are generated, the destDir is relative to the projectFolder
-**Prefix** - of the attr when you need to use html content inside an attribute
+**componentsFolder** - default folder where the components are stored
+**srcDir** - source directory, srcDir is relative to the projectFolder
+**destDir** - Destination directory, where the html files are generated, the destDir is relative to the projectFolder
+**attrNodePrefix** - Prefix of the attr when you need to use html content inside an attribute
 **files** - https://github.com/arnogues/html-components
 
 HTMLComponents
