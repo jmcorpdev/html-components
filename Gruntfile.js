@@ -72,7 +72,7 @@ module.exports = function (grunt) {
         example();
     });
     */
-    grunt.registerTask('docEnd', function() {
+    /*grunt.registerTask('docEnd', function() {
         //move generated document files into doc folder
         var fs = require('fs');
         if(!fs.existsSync('doc')) {
@@ -80,5 +80,5 @@ module.exports = function (grunt) {
         }
 
 
-    });
+    });*/
 };
