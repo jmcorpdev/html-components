@@ -1,7 +1,6 @@
-#  [![Build Status](https://secure.travis-ci.org/arnogues/html-components.png?branch=master)](http://travis-ci.org/arnogues/html-components)
-
 > Create html components from templates in a simple way
 
+//TODO test 
 
 
 
@@ -10,11 +9,22 @@
 Install the module with: `npm install html-components --save-dev`
 
 ```js
-var html-components = require('html-components');
-html-components.awesome(); // "awesome"
+var HtmlComponents = require('html-components');
+var htmlComponent = new HtmlComponents({
+    componentsFolder:'components',
+});
 ```
 
-## quick example
+##usage
+
+
+## Documentation
+
+All methods are described here :
+[lib/html-components.js](doc/lib/html-components.md)
+
+
+## Examples
 - Create a component into the components folder
 components/mycomp.hbs
 
@@ -51,12 +61,6 @@ Result :
 <html>
 <body>
 
-<mycomp myattr="custom attribute">
-    <_attr2>
-        I can also use the attribute with html or another custom html components
-    </_attr2>
-</mycomp>
-
 <div class="mycomp">
     custom attribute
     
@@ -69,20 +73,22 @@ Result :
 </html>
 ```
 
-## Documentation
-Generated documentation for methods is here : 
-[lib/html-components.js](lib/html-components.md)
 
 
-## Examples
-
-_(Coming soon)_
 
 
 ## Contributing
 
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com).
 
+
+# Todo list
+* TODO : add possibility to create data-dummy and data-foo object in addition to the data object. exemaple : <node data-dummy-bar="foo" data-dummy-fooooo="bar"> become a var data-dummy
+* TODO : extract handlebars as a plugin
+* TODO : add option for template language (possibility to replace handlebars by another template engine)
+* TODO : check if code formatting can be added easily
+* TODO : documentation
+ 
 
 ## License
 

@@ -8,6 +8,7 @@ module.exports = function (grunt) {
 
     // Project configuration.
     grunt.initConfig({
+        clean: ['.tmp'],
         nodeunit: {
             files: ['test/**/*_test.js']
         },
@@ -64,21 +65,21 @@ module.exports = function (grunt) {
     });
 
     // Default task.
-    grunt.registerTask('default', ['jshint', 'mochacli']);
+    grunt.registerTask('default', ['clean', 'jshint', 'mochacli', 'clean']);
     grunt.registerTask('dev', ['example', 'watch']);
     grunt.registerTask('devtest', ['jshint:test', 'mochacli', 'watch']);
     /*grunt.registerTask('example', function () {
-        var example = require('./example/html-components_example');
-        example();
-    });
-    */
+     var example = require('./example/html-components_example');
+     example();
+     });
+     */
     /*grunt.registerTask('docEnd', function() {
-        //move generated document files into doc folder
-        var fs = require('fs');
-        if(!fs.existsSync('doc')) {
-            fs.mkdirSync('doc');
-        }
+     //move generated document files into doc folder
+     var fs = require('fs');
+     if(!fs.existsSync('doc')) {
+     fs.mkdirSync('doc');
+     }
 
 
-    });*/
+     });*/
 };

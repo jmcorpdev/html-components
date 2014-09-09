@@ -7,16 +7,34 @@ var assert = require('assert'),
     path = require('path'),
     HTMLComponents = require('../lib/html-components.js');
 
-describe('html-components node module .', function () {
-    var htmlComponents = new HTMLComponents({
-        componentsFolder: 'test/resources/components-folder'
-    });
+var htmlComponents = new HTMLComponents({
+    componentsFolder: 'test/resources/components-folder'
+});
 
+describe('Tags', function () {
     it('should correctly list the tags in components folder', function () {
         htmlComponents.initTags();
         assert.strictEqual(htmlComponents.tags.join(','), 'comp1,customselect,scripttest,tag'); //script tag is added by code
     });
 
+    it('should get template from name', function () {
+        var template = htmlComponents.getTemplate('comp1');
+        assert.strictEqual(template, '<div class="comp1">\n' +
+            '    {{#if attr1}}<span>{{{attr1}}}</span>{{/if}}\n' +
+            '    {{#if attr2}}<span>{{{attr2}}}</span>{{/if}}{{{html}}}\n' +
+            '</div>');
+    });
+
+    it('should get template from name and type', function () {
+        var template = htmlComponents.getTemplate('tag', 'type1');
+        assert.strictEqual(template, '<div class="tagtype1">\n' +
+            '    {{#if attr1}}<span>{{{attr1}}}</span>{{/if}}\n' +
+            '    {{#if attr2}}<span>{{{attr2}}}</span>{{/if}}{{{html}}}\n' +
+            '</div>');
+    });
+});
+
+describe('Templating', function () {
     var testNodeAttr = '<node attr1="value1" attr2="value2"></node>';
     it('should return object from attributes', function () {
         var attrObj = htmlComponents.processAttributes(cheerio.load(testNodeAttr)('node').eq(0));
@@ -72,21 +90,6 @@ describe('html-components node module .', function () {
         assert.strictEqual(attr.html, '<label>This is label</label>\n<span>This is span</span> this is direct text');
     });
 
-    it('should get template from name', function () {
-        var template = htmlComponents.getTemplate('comp1');
-        assert.strictEqual(template, '<div class="comp1">\n' +
-            '    {{#if attr1}}<span>{{{attr1}}}</span>{{/if}}\n' +
-            '    {{#if attr2}}<span>{{{attr2}}}</span>{{/if}}{{{html}}}\n' +
-            '</div>');
-    });
-
-    it('should get template from name and type', function () {
-        var template = htmlComponents.getTemplate('tag', 'type1');
-        assert.strictEqual(template, '<div class="tagtype1">\n' +
-            '    {{#if attr1}}<span>{{{attr1}}}</span>{{/if}}\n' +
-            '    {{#if attr2}}<span>{{{attr2}}}</span>{{/if}}{{{html}}}\n' +
-            '</div>');
-    });
 
     it('should be possible to have a custom tag inside another tag', function () {
         var string = '<comp1><tag type="type1"></tag>blabla</comp1>';
@@ -202,7 +205,6 @@ describe('html-components node module .', function () {
         var $ = cheerio.load(fileContent);
 
         assert(/<div class="comp1">/.test($('script').eq(0).text()), true);
-
-        console.log($.html());
     });
+
 });
