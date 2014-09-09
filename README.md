@@ -61,9 +61,8 @@ Result :
 <div class="mycomp">
     custom attribute
     
-    {{#if attr2}}
         <span>I am another attribute : I can also use the attribute<br> with html or another custom html <strong>components</strong>
-    {{/if}}
+        
 </div>
 
 </body>
