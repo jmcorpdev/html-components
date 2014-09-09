@@ -209,7 +209,7 @@ describe('Templating', function () {
         assert(/<div class="comp1">/.test($('script').eq(0).text()), true);
     });
 
-    it('should generate the layout of a page', function() {
+    it('should generate the layout of a page', function () {
         htmlComponents.processFile('pageWithLayout.html', 'test/resources/htmlpages', '.tmp');
         var fileContent = fs.readFileSync('.tmp/pageWithLayout.html', {encoding: 'utf-8'});
         var fileToTest = fs.readFileSync('test/resources/resultCompare/pageWithLayout.html', {encoding: 'utf-8'});
