@@ -14,7 +14,7 @@ var htmlComponents = new HTMLComponents({
 describe('Tags', function () {
     it('should correctly list the tags in components folder', function () {
         htmlComponents.initTags();
-        assert.strictEqual(htmlComponents.tags.join(','), 'comp1,customselect,scripttest,tag'); //script tag is added by code
+        assert.strictEqual(htmlComponents.tags.join(','), 'comp1,customselect,layout,scripttest,tag'); //script tag is added by code
     });
 
     it('should get template from name', function () {
@@ -34,7 +34,7 @@ describe('Tags', function () {
     });
 });
 
-describe('Templating', function () {
+describe('Attributes', function () {
     var testNodeAttr = '<node attr1="value1" attr2="value2"></node>';
     it('should return object from attributes', function () {
         var attrObj = htmlComponents.processAttributes(cheerio.load(testNodeAttr)('node').eq(0));
@@ -90,7 +90,43 @@ describe('Templating', function () {
         assert.strictEqual(attr.html, '<label>This is label</label>\n<span>This is span</span> this is direct text');
     });
 
+    it('should transform data object into attributes string', function () {
+        var str = htmlComponents.objectToAttributeString('data-', {
+            attr1: 'value1',
+            attr2: 'value2'
+        });
 
+        assert.equal(str, 'data-attr1="value1" data-attr2="value2"');
+    });
+
+    it('should have the data object into attached string `dataStr`', function () {
+        var testNodeData = '<node attr1="value1" data-custom1="datavalue1" data-custom2="datavalue2">hmtl content</node>';
+        var $ = cheerio.load(testNodeData);
+        var attrObj = htmlComponents.processAttributes($('node').eq(0), $);
+
+        assert.equal(attrObj.data.custom1, 'datavalue1');
+        assert.equal(attrObj.data.custom2, 'datavalue2');
+        assert.equal(attrObj.dataStr, 'data-custom1="datavalue1" data-custom2="datavalue2"');
+    });
+
+    it('should be possible to specify  the prefix for the node attributes (attrNodePrefix)', function () {
+        var htmlComp = new HTMLComponents({
+            attrNodePrefix: 'z-',
+            componentsFolder: 'test/resources/components-folder'
+        });
+        htmlComp.initTags();
+        var testNodeData = '<node><z-attr1>value1</z-attr1><z-attr2>value2</z-attr2><z-data-custom1>datavalue1</z-data-custom1><z-data-custom2>datavalue2</z-data-custom2></node>';
+        var $ = cheerio.load(testNodeData);
+        var attrObj = htmlComp.processAttributes($('node').eq(0), $);
+
+        assert.equal(attrObj.attr1, 'value1');
+        assert.equal(attrObj.attr2, 'value2');
+        assert.equal(attrObj.data.custom1, 'datavalue1');
+        assert.equal(attrObj.data.custom2, 'datavalue2');
+    });
+});
+
+describe('Templating', function () {
     it('should be possible to have a custom tag inside another tag', function () {
         var string = '<comp1><tag type="type1"></tag>blabla</comp1>';
         var newHTML = htmlComponents.processHTML(string);
@@ -144,7 +180,7 @@ describe('Templating', function () {
         assert.equal(fileContent, resultPageContent);
     });
 
-    it('should process a entire directory and have the same number of files', function () {
+    it('should process an entire directory and have the same number of files', function () {
         htmlComponents.processDirectory(['**/*.html', '*.html'], 'test/resources/htmlpages', '.tmp');
 
         var files = glob.sync(['**/*'], {cwd: '.tmp'}).filter(function (f) {
@@ -155,43 +191,9 @@ describe('Templating', function () {
         assert(fs.existsSync('.tmp/page2.html'), 'test if file is written');
         assert(fs.existsSync('.tmp/subdir/page3.html'), 'test if file is written');
         assert(fs.existsSync('.tmp/subdir/page3.html'), 'test if file is written');
-        assert.equal(files.length, 4);
+        assert.equal(files.length, 5);
     });
 
-    it('should transform data object into attributes string', function () {
-        var str = htmlComponents.objectToAttributeString('data-', {
-            attr1: 'value1',
-            attr2: 'value2'
-        });
-
-        assert.equal(str, 'data-attr1="value1" data-attr2="value2"');
-    });
-
-    it('should have the data object into attached string `dataStr`', function () {
-        var testNodeData = '<node attr1="value1" data-custom1="datavalue1" data-custom2="datavalue2">hmtl content</node>';
-        var $ = cheerio.load(testNodeData);
-        var attrObj = htmlComponents.processAttributes($('node').eq(0), $);
-
-        assert.equal(attrObj.data.custom1, 'datavalue1');
-        assert.equal(attrObj.data.custom2, 'datavalue2');
-        assert.equal(attrObj.dataStr, 'data-custom1="datavalue1" data-custom2="datavalue2"');
-    });
-
-    it('should be possible to specify  the prefix for the node attributes (attrNodePrefix)', function () {
-        var htmlTemp = new HTMLComponents({
-            attrNodePrefix: 'z-',
-            componentsFolder: 'test/resources/components-folder'
-        });
-        htmlTemp.initTags();
-        var testNodeData = '<node><z-attr1>value1</z-attr1><z-attr2>value2</z-attr2><z-data-custom1>datavalue1</z-data-custom1><z-data-custom2>datavalue2</z-data-custom2></node>';
-        var $ = cheerio.load(testNodeData);
-        var attrObj = htmlTemp.processAttributes($('node').eq(0), $);
-
-        assert.equal(attrObj.attr1, 'value1');
-        assert.equal(attrObj.attr2, 'value2');
-        assert.equal(attrObj.data.custom1, 'datavalue1');
-        assert.equal(attrObj.data.custom2, 'datavalue2');
-    });
 
     it('should be possible to use collections in the component', function () {
         var html = '<customselect><item value="test">label</item><item value="test2">label2</item></customselect>';
@@ -205,6 +207,14 @@ describe('Templating', function () {
         var $ = cheerio.load(fileContent);
 
         assert(/<div class="comp1">/.test($('script').eq(0).text()), true);
+    });
+
+    it('should generate the layout of a page', function() {
+        htmlComponents.processFile('pageWithLayout.html', 'test/resources/htmlpages', '.tmp');
+        var fileContent = fs.readFileSync('.tmp/pageWithLayout.html', {encoding: 'utf-8'});
+        var fileToTest = fs.readFileSync('test/resources/resultCompare/pageWithLayout.html', {encoding: 'utf-8'});
+
+        assert.equal(fileContent, fileToTest);
     });
 
 });

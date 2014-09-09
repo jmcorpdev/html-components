@@ -1,8 +1,5 @@
 > Create html components from templates in a simple way
 
-//TODO test 
-
-
 
 ## Getting Started
 
@@ -84,7 +81,9 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 # Todo list
 * TODO : add possibility to create data-dummy and data-foo object in addition to the data object. exemaple : <node data-dummy-bar="foo" data-dummy-fooooo="bar"> become a var data-dummy
+* TODO : add cache for templates
 * TODO : extract handlebars as a plugin
+* TODO : add option to remove empty lines when there are more than 2 lines
 * TODO : add option for template language (possibility to replace handlebars by another template engine)
 * TODO : check if code formatting can be added easily
 * TODO : documentation
