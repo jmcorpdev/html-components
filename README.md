@@ -61,7 +61,7 @@ Result :
 <div class="mycomp">
     custom attribute
     
-        <span>I am another attribute : I can also use the attribute<br> with html or another custom html <strong>components</strong>
+    <span>I am another attribute : I can also use the attribute<br> with html or another custom html <strong>components</strong>
         
 </div>
 

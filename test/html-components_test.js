@@ -19,18 +19,13 @@ describe('Tags', function () {
 
     it('should get template from name', function () {
         var template = htmlComponents.getTemplate('comp1');
-        assert.strictEqual(template, '<div class="comp1">\n' +
-            '    {{#if attr1}}<span>{{{attr1}}}</span>{{/if}}\n' +
-            '    {{#if attr2}}<span>{{{attr2}}}</span>{{/if}}{{{html}}}\n' +
-            '</div>');
+        // template is a function because it is evaluate automatically by the template engine
+        assert.strictEqual(template(), '<div class="comp1">\n    \n    \n</div>');
     });
 
     it('should get template from name and type', function () {
         var template = htmlComponents.getTemplate('tag', 'type1');
-        assert.strictEqual(template, '<div class="tagtype1">\n' +
-            '    {{#if attr1}}<span>{{{attr1}}}</span>{{/if}}\n' +
-            '    {{#if attr2}}<span>{{{attr2}}}</span>{{/if}}{{{html}}}\n' +
-            '</div>');
+        assert.strictEqual(template(), '<div class="tagtype1">\n    \n    \n</div>');
     });
 });
 
