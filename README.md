@@ -74,12 +74,11 @@ Result :
 
 
 ## Contributing
-
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com).
 
 
 # Todo list
-* TODO : add possibility to create data-dummy and data-foo object in addition to the data object. exemaple : <node data-dummy-bar="foo" data-dummy-fooooo="bar"> become a var data-dummy
+* TODO : add possibility to create data-dummy and data-foo object in addition to the data object. example : <node data-dummy-bar="foo" data-dummy-fooooo="bar"> become an object data-dummy and a string if necessary
 * TODO : add cache for templates
 * TODO : extract handlebars as a plugin
 * TODO : add option to remove empty lines when there are more than 2 lines
