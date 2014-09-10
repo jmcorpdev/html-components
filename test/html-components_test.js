@@ -2,10 +2,14 @@
 'use strict';
 var assert = require('assert'),
     cheerio = require('cheerio'),
-    fs = require('fs'),
+    fs = require('fs.extra'),
     glob = require('glob-all'),
     path = require('path'),
+
     HTMLComponents = require('../lib/html-components.js');
+
+//clean .tmp folder
+fs.rmrfSync('.tmp');
 
 var htmlComponents = new HTMLComponents({
     componentsFolder: 'test/resources/components-folder'
@@ -27,6 +31,11 @@ describe('Tags', function () {
         var template = htmlComponents.getTemplate('tag', 'type1');
         assert.strictEqual(template(), '<div class="tagtype1">\n    \n    \n</div>');
     });
+
+    /*it('should put the template in cache', function () {
+        var template = htmlComponents.getTemplate('tag', 'type1');
+        assert.strictEqual(htmlComponents['tag$type'], '<div class="tagtype1">\n    \n    \n</div>');
+    });*/
 });
 
 describe('Attributes', function () {
