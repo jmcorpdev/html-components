@@ -81,6 +81,8 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 * TODO : add possibility to create data-dummy and data-foo object in addition to the data object. example : <node data-dummy-bar="foo" data-dummy-fooooo="bar"> become an object data-dummy and a string if necessary
 * TODO : add cache for templates
 * TODO : extract handlebars as a plugin
+* TODO : manage boolean attributes (if attribute="false" or attribute="true" become boolean)
+* TODO : manage single attributes like <node attribute required nothing readonly></node>
 * TODO : add option to remove empty lines when there are more than 2 lines
 * TODO : add option for template language (possibility to replace handlebars by another template engine)
 * TODO : check if code formatting can be added easily
