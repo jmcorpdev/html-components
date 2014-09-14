@@ -58,7 +58,7 @@ Result :
 <html>
 <body>
 
-<div class="mycomp">
+<div class="mycomp">xwxx
     custom attribute
     
     <span>I am another attribute : I can also use the attribute<br> with html or another custom html <strong>components</strong>
