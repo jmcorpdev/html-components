@@ -12,7 +12,7 @@ module.exports = function (grunt) {
         nodeunit: {
             files: ['test/**/*_test.js']
         },
-        jshint: {
+        /*jshint: {
             options: {
                 jshintrc: '.jshintrc',
                 reporter: require('jshint-stylish')
@@ -21,12 +21,12 @@ module.exports = function (grunt) {
                 src: 'Gruntfile.js'
             },
             lib: {
-                src: ['lib/**/*.js']
+                src: ['lib/!**!/!*.js']
             },
             test: {
-                src: ['test/**/*.js']
+                src: ['test/!**!/!*.js']
             }
-        },
+        },*/
         mochacli: {
             options: {
                 reporter: 'spec',
@@ -55,7 +55,7 @@ module.exports = function (grunt) {
             },
             test: {
                 files: '<%= jshint.test.src %>',
-                tasks: ['jshint:test', 'mochacli']
+                tasks: ['mochacli']
             }
 //            example:{
 //                files: 'example/**/*.*',
@@ -65,9 +65,9 @@ module.exports = function (grunt) {
     });
 
     // Default task.
-    grunt.registerTask('default', ['clean', 'jshint', 'mochacli', 'clean']);
+    grunt.registerTask('default', ['clean', 'mochacli', 'clean']);
     grunt.registerTask('dev', ['example', 'watch']);
-    grunt.registerTask('devtest', ['jshint:test', 'mochacli', 'watch']);
+    grunt.registerTask('devtest', ['mochacli', 'watch']);
     /*grunt.registerTask('example', function () {
      var example = require('./example/html-components_example');
      example();
