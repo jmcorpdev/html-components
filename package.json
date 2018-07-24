@@ -22,24 +22,26 @@
     "cheerio"
   ],
   "dependencies": {
-    "cheerio": "^0.17.0",
-    "glob": "^4.0.5",
-    "lodash": "^2.4.1",
-    "glob-all": "^2.4.1",
-    "mkdirp": "^0.5.0",
-    "handlebars": "^2.0.0-alpha.4"
+    "cheerio": "^0.22.0",
+    "glob": "^7.1.2",
+    "glob-all": "^3.1.0",
+    "handlebars": "^4.0.11",
+    "lodash": "^4.17.10",
+    "mkdirp": "^0.5.0"
   },
   "devDependencies": {
     "fs.extra": "^1.2.1",
-    "grunt-contrib-clean": "^0.6.0",
-    "grunt-contrib-jshint": "^0.10.0",
-    "grunt-contrib-nodeunit": "^0.3.3",
-    "grunt-contrib-watch": "^0.6.1",
+    "grunt": "^1.0.3",
+    "grunt-contrib-clean": "^1.1.0",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-nodeunit": "^2.0.0",
+    "grunt-contrib-watch": "^1.1.0",
     "grunt-jsdox": "^0.1.6",
-    "grunt-mocha-cli": "^1.9.0",
-    "jshint-stylish": "^0.2.0",
-    "load-grunt-tasks": "^0.4.0",
-    "time-grunt": "^0.3.1"
+    "grunt-mocha-cli": "^4.0.0",
+    "jshint-stylish": "^2.2.1",
+    "load-grunt-tasks": "^4.0.0",
+    "mustache": "^2.3.0",
+    "time-grunt": "^1.4.0"
   },
   "scripts": {
     "test": "grunt"
