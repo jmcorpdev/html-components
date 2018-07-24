@@ -12,7 +12,7 @@ module.exports = function (grunt) {
         nodeunit: {
             files: ['test/**/*_test.js']
         },
-        /*jshint: {
+        jshint: {
             options: {
                 jshintrc: '.jshintrc',
                 reporter: require('jshint-stylish')
@@ -26,7 +26,7 @@ module.exports = function (grunt) {
             test: {
                 src: ['test/!**!/!*.js']
             }
-        },*/
+        },
         mochacli: {
             options: {
                 reporter: 'spec',
