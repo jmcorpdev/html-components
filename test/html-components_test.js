@@ -57,7 +57,7 @@ describe('Attributes', function () {
 
 
     var testNodeAttrAsNodes = '<node><_attr1>value1</_attr1><_attr2>value2</_attr2><_data-custom1>datavalue1</_data-custom1><_data-custom2>datavalue2</_data-custom2></node>';
-    it('should process node as attributes', function () {
+    it('should process nodes as attributes', function () {
         var $ = cheerio.load(testNodeAttrAsNodes);
         var node = $('node').eq(0);
         var attrObj = htmlComponents.processNodesAsAttributes(node, $);
