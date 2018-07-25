@@ -10,9 +10,10 @@ var assert = require('assert'),
 
 //clean .tmp folder
 fs.rmrfSync('.tmp');
+var componentsFolder = 'test/resources/components-folder';
 
 var htmlComponents = new HTMLComponents({
-    componentsFolder: 'test/resources/components-folder'
+    componentsFolder: componentsFolder
 });
 
 describe('Tags', function () {
@@ -222,3 +223,59 @@ describe('Templating', function () {
     });
 
 });
+
+
+describe("Render correctly without modification", function () {
+    it("Should use render correctly", function () {
+        var htmlCompWithBeforeHTML = new HTMLComponents({
+            componentsFolder: componentsFolder
+        });
+
+        function ts(string) {
+            var newHTML = htmlCompWithBeforeHTML.processHTML(string);
+            //simple test of node "tag" existance
+            assert.equal(newHTML, string);
+        }
+
+        ts('<div>foo<br>bar</div>');
+        ts('<div>foo<hr>bar</div>');
+        ts('<div>foo<input type="text">bar</div>');
+    });
+});
+
+describe("callbacks", function () {
+    it("Should use beforeHTML callback", function () {
+        var htmlCompWithBeforeHTML = new HTMLComponents({
+            componentsFolder: componentsFolder,
+            beforeProcessHTML: function (html) {
+                return html.replace(/<span>(.+?)<\/span>/g, "<strong>$1</strong>");
+            }
+        });
+
+        var newHTML = htmlCompWithBeforeHTML.processHTML("<div>foobar<span>buzz</span></div>");
+        //simple test of node "tag" existanc
+        assert.equal(newHTML, "<div>foobar<strong>buzz</strong></div>");
+    });
+
+    it("Should use afterProcessHTML callback", function () {
+        var htmlCompWithBeforeHTML = new HTMLComponents({
+            componentsFolder: componentsFolder,
+            afterProcessHTML: function (html) {
+                return html.replace(/<span>(.+?)<\/span>/g, "<strong>$1</strong>");
+            }
+        });
+
+        var newHTML = htmlCompWithBeforeHTML.processHTML("<div>foobar<span>buzz</span></div>");
+        //simple test of node "tag" existanc
+        assert.equal(newHTML, "<div>foobar<strong>buzz</strong></div>");
+    });
+});
+
+/*
+describe("bugs", function() {
+    it.only("Should not render multiple <br>", function() {
+      var newHTML = htmlComponents.processHTML("<td>Foo<br/>barr</td>");
+      //simple test of node "tag" existance
+      assert.equal(newHTML, "<td>Foo<br>barr</td>");
+    });
+});*/
