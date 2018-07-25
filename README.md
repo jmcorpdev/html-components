@@ -78,6 +78,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 
 # Todo list
+* BUG : if component file is call "line.hbs", it doesn't work
 * TODO : add possibility to create data-dummy and data-foo object in addition to the data object. example : <node data-dummy-bar="foo" data-dummy-fooooo="bar"> become an object data-dummy and a string if necessary
 * TODO : add cache for templates
 * TODO : extract handlebars as a plugin
