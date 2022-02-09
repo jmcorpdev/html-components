@@ -211,6 +211,23 @@ describe("Templating", function () {
     assert(/<div class="comp1">/.test($("script").eq(0).text()), true);
   });
 
+  it.only("Don't encode next scripts tags", function () {
+    const html = `
+    <html>
+    <head><title>test</title></head>
+    <body>test
+
+    <span></span>
+    <script type="text/javascript" src="js/framework.js"></script>
+    <script type="text/javascript" src="js/header.js"></script>
+    </body>
+    </html>
+  `;
+
+    const newHTML = htmlComponents.processHTML(html);
+    assert.equal(html, newHTML);
+  });
+
   it("should generate the layout of a page", function () {
     htmlComponents.processFile("pageWithLayout.html", "test/resources/htmlpages", ".tmp");
     var fileContent = fs.readFileSync(".tmp/pageWithLayout.html", { encoding: "utf-8" });
