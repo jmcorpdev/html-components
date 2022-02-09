@@ -133,7 +133,7 @@ describe("Attributes", function () {
 });
 
 describe("Templating", function () {
-  it("should be possible to have a custom tag inside another tag", function () {
+  it.only("should be possible to have a custom tag inside another tag", function () {
     var string = '<comp1><tag type="type1"></tag>blabla</comp1>';
     var newHTML = htmlComponents.processHTML(string);
     //simple test of node "tag" existance
@@ -211,7 +211,7 @@ describe("Templating", function () {
     assert(/<div class="comp1">/.test($("script").eq(0).text()), true);
   });
 
-  it.only("Don't encode next scripts tags", function () {
+  it("Don't encode next scripts tags", function () {
     const html = `
     <html>
     <head><title>test</title></head>
@@ -282,12 +282,3 @@ describe("callbacks", function () {
     assert.equal(newHTML, "<div>foobar<strong>buzz</strong></div>");
   });
 });
-
-/*
-describe("bugs", function() {
-    it.only("Should not render multiple <br>", function() {
-      var newHTML = htmlComponents.processHTML("<td>Foo<br/>barr</td>");
-      //simple test of node "tag" existance
-      assert.equal(newHTML, "<td>Foo<br>barr</td>");
-    });
-});*/
