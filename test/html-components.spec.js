@@ -211,7 +211,7 @@ describe("Templating", function () {
     assert(/<div class="comp1">/.test($("script").eq(0).text()), true);
   });
 
-  it.only("Don't encode next scripts tags", function () {
+  it("Don't encode next scripts tags", function () {
     const html = `
     <html>
     <head><title>test</title></head>
