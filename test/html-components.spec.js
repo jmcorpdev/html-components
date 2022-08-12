@@ -18,7 +18,7 @@ var htmlComponents = new HTMLComponents({
 describe("Tags", function () {
   it("should correctly list the tags in components folder", function () {
     htmlComponents.initTags();
-    assert.strictEqual(htmlComponents.tags.join(","), "comp1,customselect,layout,scripttest,tag"); //script tag is added by code
+    assert.strictEqual(htmlComponents.tags.join(","), "comp1,customselect,layout,newcomp,scripttest,tag"); //script tag is added by code
   });
 
   it("should get template from name", function () {
@@ -280,6 +280,26 @@ describe("callbacks", function () {
     var newHTML = htmlCompWithBeforeHTML.processHTML("<div>foobar<span>buzz</span></div>");
     //simple test of node "tag" existanc
     assert.equal(newHTML, "<div>foobar<strong>buzz</strong></div>");
+  });
+});
+
+describe("html-component folder structure", function () {
+  it("Shoud use /{component}/{component}.hbs and /{component}/{type}/{type}.hbs file structure", function () {
+    var htmlComp = new HTMLComponents({
+      componentsFolder: componentsFolder,
+      newFolderStructure: true,
+    });
+
+    var newHTML = htmlComp.processHTML(`<newcomp></newcomp><newcomp type="type1"></newcomp>`);
+
+    assert.equal(
+      newHTML,
+      `<span>
+  I am new comp
+</span><span>
+  i am newcomp type1
+</span>`
+    );
   });
 });
 
