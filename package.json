@@ -26,6 +26,7 @@
     "glob": "^8.0.3",
     "glob-all": "^3.3.0",
     "handlebars": "^4.7.7",
+    "handlebars-helpers": "^0.10.0",
     "lodash": "^4.17.21",
     "mkdirp": "^1.0.4"
   },
@@ -38,8 +39,8 @@
     "load-grunt-tasks": "^5.1.0",
     "mocha": "^10.0.0",
     "mustache": "^4.2.0",
-    "time-grunt": "^1.4.0",
-    "nth-check": "^2.0.1"
+    "nth-check": "^2.0.1",
+    "time-grunt": "^1.4.0"
   },
   "scripts": {
     "test": "mocha"
