@@ -2,7 +2,7 @@
 
 module.exports = function (grunt) {
   // Show elapsed time at the end
-  //require('time-grunt')(grunt);
+  require("time-grunt")(grunt);
   // Load all grunt tasks
   require("load-grunt-tasks")(grunt);
 
@@ -21,25 +21,24 @@ module.exports = function (grunt) {
         src: "Gruntfile.js",
       },
       lib: {
-        src: ["lib/!**!/!*.js"],
+        src: ["lib/**/*.js"],
       },
       test: {
-        src: ["test/!**!/!*.js"],
+        src: ["test/**/*.js"],
       },
     },
-    // mochacli: {
-    //     options: {
-    //         reporter: 'spec',
-    //         bail: true
-    //     },
-    //     all: ['test/*.js']
-    // },
+    mochacli: {
+      options: {
+        reporter: "spec",
+        bail: true,
+      },
+      all: ["test/*.js"],
+    },
     jsdox: {
       generate: {
         options: {
           contentsTitle: "My Project Documentation",
         },
-
         src: ["lib/**/*.js"],
         dest: "doc",
       },
@@ -57,29 +56,12 @@ module.exports = function (grunt) {
         files: "<%= jshint.test.src %>",
         tasks: ["mochacli"],
       },
-      //            example:{
-      //                files: 'example/**/*.*',
-      //                tasks: ['example']
-      //            }
     },
   });
 
   // Default task.
   grunt.registerTask("default", ["clean", "mochacli", "clean"]);
-  grunt.registerTask("dev", ["example", "watch"]);
+  grunt.registerTask("dev", ["watch"]);
+  grunt.registerTask("test", ["mochacli"]);
   grunt.registerTask("devtest", ["mochacli", "watch"]);
-  /*grunt.registerTask('example', function () {
-     var example = require('./example/html-components_example');
-     example();
-     });
-     */
-  /*grunt.registerTask('docEnd', function() {
-     //move generated document files into doc folder
-     var fs = require('fs');
-     if(!fs.existsSync('doc')) {
-     fs.mkdirSync('doc');
-     }
-
-
-     });*/
 };
