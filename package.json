@@ -39,8 +39,8 @@
     "load-grunt-tasks": "^5.1.0",
     "mocha": "^11.1.0",
     "mustache": "^4.2.0",
-    "nth-check": "^2.1.1",
-    "time-grunt": "^2.0.0"
+    "time-grunt": "^2.0.0",
+    "nth-check": "^2.1.1"
   },
   "scripts": {
     "test": "mocha"
