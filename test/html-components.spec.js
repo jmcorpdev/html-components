@@ -54,8 +54,13 @@ describe("Attributes", function () {
     assert.strictEqual(attrObj.data.custom2, "datavalue2");
   });
 
-  var testNodeAttrAsNodes =
-    "<node><_attr1>value1</_attr1><_attr2>value2</_attr2><_data-custom1>datavalue1</_data-custom1><_data-custom2>datavalue2</_data-custom2></node>";
+  var testNodeAttrAsNodes = `<node>
+    <hc-attribute-attr1>value1</hc-attribute-attr1>
+    <hc-attribute-attr2>value2</hc-attribute-attr2>
+    <hc-attribute-data-custom1>datavalue1</hc-attribute-data-custom1>
+    <hc-attribute-data-custom2>datavalue2</hc-attribute-data-custom2>
+    </node>`;
+
   it("should process nodes as attributes", function () {
     var $ = cheerio.load(testNodeAttrAsNodes, { xml: { xmlMode: true }, decodeEntities: false }, false);
     var node = $("node").eq(0);
@@ -67,7 +72,7 @@ describe("Attributes", function () {
   });
 
   var testNodeDataAsAttributeProperties =
-    "<node><_attr1>value1</_attr1><_attr2>value2</_attr2><_data-custom1>datavalue1</_data-custom1><_data-custom2>datavalue2</_data-custom2></node>";
+    "<node><hc-attribute-attr1>value1</hc-attribute-attr1><hc-attribute-attr2>value2</hc-attribute-attr2><hc-attribute-data-custom1>datavalue1</hc-attribute-data-custom1><hc-attribute-data-custom2>datavalue2</hc-attribute-data-custom2></node>";
   it("should process all nodes even data-nodes into attributes object", function () {
     var $ = cheerio.load(testNodeDataAsAttributeProperties, { xml: { xmlMode: true }, decodeEntities: false }, false);
     var node = $("node").eq(0);
@@ -87,7 +92,7 @@ describe("Attributes", function () {
   });
 
   var testNodeWithHTML =
-    "<node><_attr1>value1</_attr1><_attr2>value2</_attr2><_data-custom1>datavalue1</_data-custom1><_data-custom2>datavalue2</_data-custom2><label>This is label</label>\n<span>This is span</span> this is direct text</node>";
+    "<node><hc-attribute-attr1>value1</hc-attribute-attr1><hc-attribute-attr2>value2</hc-attribute-attr2><hc-attribute-data-custom1>datavalue1</hc-attribute-data-custom1><hc-attribute-data-custom2>datavalue2</hc-attribute-data-custom2><label>This is label</label>\n<span>This is span</span> this is direct text</node>";
   it("should put property `html` with the html of the node without custom nodes", function () {
     var $ = cheerio.load(testNodeWithHTML, { xml: { xmlMode: true }, decodeEntities: false }, false);
     var node = $("node").eq(0);
@@ -122,7 +127,8 @@ describe("Attributes", function () {
     htmlComp.initTags();
     var testNodeData =
       "<node><z-attr1>value1</z-attr1><z-attr2>value2</z-attr2><z-data-custom1>datavalue1</z-data-custom1><z-data-custom2>datavalue2</z-data-custom2></node>";
-    var $ = cheerio.load(testNodeData);
+    var html = htmlComp.processHTML(testNodeData);
+    var $ = cheerio.load(html);
     var attrObj = htmlComp.processAttributes($("node").eq(0), $);
 
     assert.equal(attrObj.attr1, "value1");
@@ -142,7 +148,7 @@ describe("Templating", function () {
 
   it("should replace node by it's generated HTML", function () {
     htmlComponents.initTags();
-    var html = '<comp1 attr1="i am attr1"><_attr2>I am attr2</_attr2></comp1>';
+    var html = '<comp1 attr1="i am attr1"><hc-attribute-attr2>I am attr2</hc-attribute-attr2></comp1>';
     var $ = cheerio.load(html, { xml: { xmlMode: true }, decodeEntities: false }, false);
     var node = $("comp1").eq(0);
     var newHTML = htmlComponents.processNode(node, $);
