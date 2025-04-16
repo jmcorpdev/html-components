@@ -155,31 +155,39 @@ describe("Templating", function () {
     assert.strictEqual(newHTML, '<div class="comp1">\n' + "    <span>i am attr1</span>\n" + "    <span>I am attr2</span>\n" + "</div>");
   });
 
-  var resultPageContent =
-    "<!DOCTYPE html>\n" +
-    "<html>\n" +
-    '<head lang="en">\n' +
-    '    <meta charset="UTF-8">\n' +
-    "    <title></title>\n" +
-    "</head>\n" +
-    "<body>\n" +
-    "\n" +
-    '<div class="comp1">\n' +
-    "    <span>i am attr1</span>\n" +
-    "    <span>I am attr2</span>\n    \n\n" +
-    "</div>\n" +
-    "\n" +
-    '<div class="tagtype1">\n' +
-    "    <span>i am attr1</span>\n" +
-    "    <span>I am attr2</span>\n    \n\n" +
-    "</div>\n" +
-    "\n" +
-    "</body>\n" +
-    "</html>";
+  var resultPageContent = `<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Page</title>
+</head>
+
+<body>
+
+    <div class="comp1">
+    <span>i am attr1</span>
+    <span>I am attr2</span>
+        
+    
+</div>
+
+    <div class="tagtype1">
+    <span>i am attr1</span>
+    <span>I am attr2</span>
+        
+    
+</div>
+
+</body>
+
+</html>`;
+
   it("should process an entire html string from file", function () {
     htmlComponents.initTags();
     var html = fs.readFileSync("test/resources/htmlpages/page.html", { encoding: "utf-8" });
     var newHTML = htmlComponents.processHTML(html);
+    console.log(newHTML);
     assert.equal(newHTML, resultPageContent);
   });
 
@@ -212,8 +220,8 @@ describe("Templating", function () {
   it("shoud be possible to process script tags", function () {
     htmlComponents.processFile("scripttest.html", "test/resources/htmlpages", ".tmp");
     var fileContent = fs.readFileSync(".tmp/scripttest.html", { encoding: "utf-8" });
-    var $ = cheerio.load(fileContent);
 
+    var $ = cheerio.load(fileContent);
     assert(/<div class="comp1">/.test($("script").eq(0).text()), true);
   });
 
